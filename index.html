@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0;
+            }
+            .grid {
+                display: flex;
+                flex: 1 1 0;
+            }
+            canvas {
+                flex: 1 0 0;
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="grid">
+            <canvas id="canvas-id" width="800" height="600"></canvas>
+        </div>
+        <script>
+            function drawDragonCurve(ctx, x1, y1, x2, y2, depth, sign) {
+                if (depth === 0) {
+                    ctx.fillStyle = "white";
+                    ctx.strokeStyle = "white";
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+                } else {
+                    var dx = x2 - x1;
+                    var dy = y2 - y1;
+                    
+                    var x3 = (x1 + x2 + sign * dy) / 2;
+                    var y3 = (y1 + y2 - sign * dx) / 2;
+
+                    drawDragonCurve(ctx, x1, y1, x3, y3, depth - 1, 1);
+                    drawDragonCurve(ctx, x3, y3, x2, y2, depth - 1, -1);
+                }
+            }
+
+            function drawDragon() {
+                var canvas = document.getElementById('canvas-id');
+                if (canvas.getContext) {
+                    var ctx = canvas.getContext('2d');
+                    drawDragonCurve(ctx, 300, 300, 500, 300, 10, 1);
+                }
+            }
+
+            drawDragon();
+        </script>
+    </body>
+</html>
